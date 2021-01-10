@@ -11,6 +11,7 @@
     <name>autotest-history</name>
     <developers>
         <developer>
+            <id>Vanadiiii</id>
             <name>Ivan Matveev</name>
             <email>vanadiiii42@gmail.com</email>
             <organization>Dexsys</organization>
@@ -21,8 +22,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <selenium.version>3.141.59</selenium.version>
         <testng.version>7.3.0</testng.version>
+        <selenide.version>5.16.2</selenide.version>
+        <logback.version>1.2.3</logback.version>
+        <slf4j-api.version>1.7.30</slf4j-api.version>
     </properties>
 
     <dependencies>
@@ -34,9 +37,20 @@
         </dependency>
 
         <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-java</artifactId>
-            <version>${selenium.version}</version>
+            <groupId>com.codeborne</groupId>
+            <artifactId>selenide</artifactId>
+            <version>${selenide.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j-api.version}</version>
         </dependency>
     </dependencies>
 

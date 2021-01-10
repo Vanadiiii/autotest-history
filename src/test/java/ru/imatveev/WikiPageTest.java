@@ -1,46 +1,46 @@
 package ru.imatveev;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
+import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.testng.ScreenShooter;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-import java.util.concurrent.TimeUnit;
+import java.util.List;
+import java.util.Map;
 
+import static com.codeborne.selenide.Configuration.baseUrl;
+import static com.codeborne.selenide.Configuration.browser;
 import static org.testng.Assert.assertEquals;
 
+@Listeners({ScreenShooter.class})
 public class WikiPageTest {
-    private WebDriver driver;
-    private WikiPage page;
+    private final WikiPage page = new WikiPage();
 
-    @BeforeMethod
+    @BeforeClass
     public void setUp() {
-        //set path to driver
-        System.setProperty("webdriver.gecko.driver", "/home/ivan/Downloads/geckodriver");
-        //create new driver
-        driver = new FirefoxDriver();
-        //add timeout for every elements searching
-        driver.manage()
-                .timeouts()
-                .implicitlyWait(5, TimeUnit.SECONDS);
-        //open browser's url
-        driver.get("https://www.wikipedia.org/");
+        //add baseUrl of selenide.Configuration.class
+        baseUrl = "https://www.wikipedia.org/";
+        //chose browser in selenide.Configiguration.class
+        browser = "chrome";
+        //set browser options
+        if (browser.equals("chrome") || browser.equals("opera")) {
+            Configuration.browserCapabilities.setCapability(
+                    "goog:chromeOptions", Map.of(
+                            "args", List.of("--remote-debugging-port=9222")
+                    )
+            );
+        }
+        //add timeout
+        Configuration.timeout = 5000;
     }
 
     @Test
     public void searchTest() {
         String searchingWord = "History";
-        page = new WikiPage(driver);
-        page.textRequest(searchingWord)
+        page.openPage()
+                .textRequest(searchingWord)
                 .search();
-
         assertEquals(page.getHeadingText(), searchingWord);
-    }
-
-    @AfterMethod
-    public void close() {
-        driver.manage().deleteAllCookies();
-        driver.quit();
     }
 }

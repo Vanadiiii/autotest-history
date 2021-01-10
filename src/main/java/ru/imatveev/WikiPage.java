@@ -1,33 +1,34 @@
 package ru.imatveev;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
+import com.codeborne.selenide.SelenideElement;
 
-import static org.openqa.selenium.By.*;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.open;
+import static org.openqa.selenium.By.id;
+import static org.openqa.selenium.By.name;
 
 public class WikiPage {
-    private final WebDriver driver;
+    private final SelenideElement searchField = $(name("search"));
+    private final SelenideElement button = $(".pure-button.pure-button-primary-progressive");
+    private final SelenideElement heading = $(id("firstHeading"));
 
-    public WikiPage(WebDriver webDriver) {
-        this.driver = webDriver;
+    public WikiPage openPage() {
+        open("");
+        return this;
     }
 
-    private final By searchField = name("search");
-    private final By button = cssSelector(".pure-button.pure-button-primary-progressive");
-    private final By heading = id("firstHeading");
-
     public WikiPage textRequest(String request) {
-        driver.findElement(searchField).sendKeys(request);
+        searchField.setValue(request);
         return this;
     }
 
     public WikiPage search() {
-        driver.findElement(button).click();
+        button.click();
         return this;
     }
 
     public String getHeadingText() {
-        return driver.findElement(heading).getText();
+        return heading.getText();
     }
 
 }
